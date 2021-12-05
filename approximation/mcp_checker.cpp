@@ -2,22 +2,16 @@
 #include <vector>
 #include <set>
 #include <string>
-#include <chrono>
-#include <fstream>
 
 using namespace std;
-using namespace std::chrono;
 
-int main(int argc, char* argv[]){
-
-    auto start = high_resolution_clock::now();
+int main(){
     string header;
     getline(cin, header);
 
     int vertices = 0, edges, u, v;
     cin >> vertices >> vertices >> edges;
     vector<int> adj_list[vertices];
-
     while(edges--){
         cin >> u >> v;
 
@@ -55,7 +49,7 @@ int main(int argc, char* argv[]){
 
         set<int> rest_copy;
 
-        for (auto i : rest){
+        for(auto i : rest){
             rest_copy.insert(i);
         }
 
@@ -67,19 +61,28 @@ int main(int argc, char* argv[]){
             }
         }
     }
-    
-    cout << "Tamanho do clique máximo: " << sub.size() << "\n";
-    cout << "Vértices do clique máximo: ";
-    for (auto iter = sub.begin(); iter != sub.end(); iter++) {
-        if (iter != sub.begin()) cout << ", ";
-        cout << *iter;
+
+    bool checker, correct = true;
+    for (auto v : sub) {
+        for(auto u : sub){
+            checker = false;
+            if (u != v) {
+                for (auto t : adj_list[v]){
+                    if (t == u) {
+                        checker = true;
+                    }
+                }
+                if (!checker) {
+                    correct = false;
+                }
+            }
+        }
     }
-    cout << "\n";
-
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-  
-    cout << "Tempo de duração da execução: "
-         << duration.count() << " microsegundos" << endl;
-
+    if (!correct) {
+        cout << "N\n";
+    }
+    else {
+        cout << "S\n";
+    }
+    
 }
