@@ -10,10 +10,10 @@ gpp mcp_greedy.cpp -o mcp_greedy
 ```
 
 ## Execução
-Para a execução, considere `<` e `>` como os operadores, respectivamente, de recebimento e envio de fluxo para um arquivo.
+Para a execução, considere `<` e `>` como os operadores, respectivamente, de recebimento e envio de fluxo para um arquivo:
 
 ``` sh
 ./mcp_greedy < instances/instance > result.txt
 ``` 
 
-Onde `instance` é o nome de um dos arquivos das instâncias de teste e `result.txt`, o nome do arquivo em que ficarão armazenados os resultados do teste.
+`instance` representa o nome de um dos arquivos das instâncias de teste os quais podem ser encontrandos no diretório `instances` e `result.txt`, o nome do arquivo em que ficarão armazenados os resultados do teste.
