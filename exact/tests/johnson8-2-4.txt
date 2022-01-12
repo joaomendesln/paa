@@ -1,0 +1,3 @@
+Tamanho do clique máximo: 4
+Vértices do clique máximo: 1, 6, 15, 28
+Tempo de duração da execução: 6459 microsegundos
