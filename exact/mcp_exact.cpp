@@ -163,10 +163,7 @@ int main(int argc, char* argv[]){
         temp_ordered_vertex_set.insert(min_vertex);
     }
 
-    // check in the begining if it is already a clique
-    if (!clique_checker(adj_list, vertices)){
-        branching(adj_list, clique_ordered_vertex, 0);
-    }
+    branching(adj_list, clique_ordered_vertex, 0);
 
     cout << "Tamanho do clique máximo: " << l_b << "\n";
     cout << "Vértices do clique máximo: ";
