@@ -2,7 +2,7 @@
 
 O algoritmo em questão pode ser encontro arquivo `mcp_exact.cpp`. A sua saída apresenta o tamanho e configuração do clique máximo encontrado, e o tempo para execução em microssegundos.
 
-A fim de checar se o clique resultado do algoritmo é realmente um subgrafo completo, foi implementado o código `mcp_greedy_checker.cpp`, cuja saída é "S" se o clique é um subgrafo completo e "N" caso contrário.
+A fim de checar se o clique resultado do algoritmo é realmente um subgrafo completo, foi implementado o código `mcp_checker.cpp`, cuja saída é "S" se o clique é um subgrafo completo e "N" caso contrário.
 
 ## Compilação
 ```sh
