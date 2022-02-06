@@ -14,6 +14,7 @@ using namespace std::this_thread;
 
 int l_b;
 vector<int> clique, temp_clique;
+int vertices, edges;
 
 bool clique_checker(vector<int> adj_list[], int vertices){
     bool result = true;
@@ -24,22 +25,35 @@ bool clique_checker(vector<int> adj_list[], int vertices){
 }
 
 vector<int> sort_adjcent_v(vector<int> adj_list[], int v){
+
+    // cout << v << "\n";
     vector<int> sorted;
     vector<bool> already_sorted;
-    for (int i = 0; i < adj_list[v].size(); i++){
+    for (int i = 0; i < vertices + 10; i++){
+        // cout << i << " ";
         already_sorted.push_back(false);
     }
+    // cout << "\n";
+
+    // for (auto i : adj_list[v]) cout << i << " ";
+    // cout << "\n";
 
     int max_degree, max_vertex;
     for (int i = 0; i < adj_list[v].size(); i++){
+        // cout << "b\n";
+
+        // cout << i << " - " << max_degree << " - " << max_vertex << "\n";
         max_degree = -1, max_vertex = -1;
         for (int j = 0; j < adj_list[v].size(); j++){
+            // cout << "(" << adj_list[v][j] << " - " << adj_list[adj_list[v][j]].size() << ")";
             if(!already_sorted[adj_list[v][j]] && static_cast<int>(adj_list[adj_list[v][j]].size()) > max_degree){
                 max_degree = adj_list[adj_list[v][j]].size();
                 max_vertex = adj_list[v][j];
             }
         }
+        // cout << "\n";
         already_sorted[max_vertex] = true;
+        // cout << "blablah\n";
         sorted.push_back(max_vertex);
     }
 
@@ -50,23 +64,27 @@ void grasp(vector<int> adj_list[], vector<int> sorted_vertex, int it, int perc){
 
     // perc% vertex vector with max degree
     vector<int> perc_sorted;
+    // cout << sorted_vertex.size() << "\n";
     for(int i = 0; i < perc * sorted_vertex.size() / 100; i++){
         perc_sorted.push_back(sorted_vertex[i]);
     }
 
     int cont = 0;
     for (int i = 0; i < it; i++){
+
         temp_clique.clear();
         // srand(time(NULL));
+        // cout << rand() << " - " << perc_sorted.size() << "\n";
         int rand_v = perc_sorted[rand() % perc_sorted.size()];
 
         vector<int> sorted_rand_v = sort_adjcent_v(adj_list, rand_v);
 
-        cout << rand_v + 1 << "\n";
-        for (auto i : sorted_rand_v) cout << i + 1 << " ";
-        cout << "\n";
+        // cout << rand_v + 1 << "\n";
+        // for (auto i : sorted_rand_v) cout << i + 1 << " ";
+        // cout << "\n";
         
         int a = 0;
+
         while (a < sorted_rand_v.size()){
             temp_clique.clear();
             temp_clique.push_back(rand_v);
@@ -118,7 +136,8 @@ int main(int argc, char* argv[]){
     string header;
     getline(cin, header);
 
-    int vertices = 0, edges, u, v;
+    int u, v;
+    vertices = 0;
     cin >> vertices >> vertices >> edges;
     vector<int> adj_list[vertices];
 
@@ -129,7 +148,6 @@ int main(int argc, char* argv[]){
         adj_list[u - 1].push_back(v - 1);
         adj_list[v - 1].push_back(u - 1);
     }
-
     // sort array by vertex degree
     vector<int> sorted_vertex;
     vector<bool> already_sorted;
@@ -139,6 +157,8 @@ int main(int argc, char* argv[]){
     }
     int max_degree, max_vertex;
 
+
+    
     for(int i = 0; i < vertices; i++){
         max_degree = -1;
         max_vertex = -1;
@@ -155,12 +175,17 @@ int main(int argc, char* argv[]){
         sorted_vertex.push_back(max_vertex);
     }
 
-    int it = 5, perc = 34;
+    // cout << vertices << "\n";
 
     // for (auto i : sorted_vertex) cout << i + 1 << " ";
     // cout << "\n";
 
+    int it, perc;
+    cin >> it;
+    cin >> perc;
+
     srand((unsigned) time(0));
+
     grasp(adj_list, sorted_vertex, it, perc);
 
     cout << "Tamanho do clique máximo: " << clique.size() << "\n";
