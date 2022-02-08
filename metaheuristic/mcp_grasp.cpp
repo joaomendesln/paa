@@ -5,24 +5,14 @@
 #include <chrono>
 #include <fstream>
 #include <thread>
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
+#include <time.h>
 
 using namespace std;
 using namespace std::chrono;
 using namespace std::this_thread;
 
-int l_b;
 vector<int> clique, temp_clique;
 int vertices, edges;
-
-bool clique_checker(vector<int> adj_list[], int vertices){
-    bool result = true;
-    for (int i = 0; i < vertices; i++){
-        if (adj_list[i].size() != vertices - 1) result = false;
-    }
-    return result;
-}
 
 vector<int> sort_adjcent_v(vector<int> adj_list[], int v){
 
@@ -60,12 +50,11 @@ vector<int> sort_adjcent_v(vector<int> adj_list[], int v){
     return sorted;
 }
 
-void grasp(vector<int> adj_list[], vector<int> sorted_vertex, int it, int perc){
+void grasp(vector<int> adj_list[], vector<int> sorted_vertex, int it){
 
-    // perc% vertex vector with max degree
+    // 10% vertex vector with max degree
     vector<int> perc_sorted;
-    // cout << sorted_vertex.size() << "\n";
-    for(int i = 0; i < perc * sorted_vertex.size() / 100; i++){
+    for(int i = 0; i < 10 * sorted_vertex.size() / 100; i++){
         perc_sorted.push_back(sorted_vertex[i]);
     }
 
@@ -73,16 +62,10 @@ void grasp(vector<int> adj_list[], vector<int> sorted_vertex, int it, int perc){
     for (int i = 0; i < it; i++){
 
         temp_clique.clear();
-        // srand(time(NULL));
-        // cout << rand() << " - " << perc_sorted.size() << "\n";
         int rand_v = perc_sorted[rand() % perc_sorted.size()];
 
         vector<int> sorted_rand_v = sort_adjcent_v(adj_list, rand_v);
 
-        // cout << rand_v + 1 << "\n";
-        // for (auto i : sorted_rand_v) cout << i + 1 << " ";
-        // cout << "\n";
-        
         int a = 0;
 
         while (a < sorted_rand_v.size()){
@@ -90,25 +73,18 @@ void grasp(vector<int> adj_list[], vector<int> sorted_vertex, int it, int perc){
             temp_clique.push_back(rand_v);
             for (int j = 0; j < sorted_rand_v.size(); j++){
                 int idx = (j + a) % sorted_rand_v.size();
-                // cout << idx << "\n";
                 // verify if it forms a clique
                 bool is_clique = true;
                 int k = 0;
                 while(is_clique && k < temp_clique.size()){
-                    // cout << "temp_clique: ";
-                    // for (auto x : temp_clique) cout << x + 1 << " ";
-                    // cout << "\n";
                     is_clique = false;
                     for (int l = 0; l < adj_list[temp_clique[k]].size(); l++){
-                        // cout << sorted_rand_v[idx] + 1 << " - " << adj_list[temp_clique[k]][l] + 1 << "\n";
                         if (sorted_rand_v[idx] == adj_list[temp_clique[k]][l]){
                             is_clique = true;
                         }
                     }
                     k++;
                 }
-
-                // cout << "is clique: " << is_clique << "\n";
 
                 // if it forms a clique, add it to temporary solution
                 if(is_clique){
@@ -163,30 +139,21 @@ int main(int argc, char* argv[]){
         max_degree = -1;
         max_vertex = -1;
         for (int j = 0; j < vertices; j++){
-            // cout << already_sorted[j] << " " << (static_cast<int>(adj_list[j].size()) > max_degree) << "\n";
             if(!already_sorted[j] && static_cast<int>(adj_list[j].size()) > max_degree){
-                // cout << "a\n";
                 max_degree = adj_list[j].size();
                 max_vertex = j;
             }
         }
-        // cout << max_vertex << "\n";
         already_sorted[max_vertex] = true;
         sorted_vertex.push_back(max_vertex);
     }
 
-    // cout << vertices << "\n";
-
-    // for (auto i : sorted_vertex) cout << i + 1 << " ";
-    // cout << "\n";
-
-    int it, perc;
+    int it;
     cin >> it;
-    cin >> perc;
 
     srand((unsigned) time(0));
 
-    grasp(adj_list, sorted_vertex, it, perc);
+    grasp(adj_list, sorted_vertex, it);
 
     cout << "Tamanho do clique máximo: " << clique.size() << "\n";
     cout << "Vértices do clique máximo: ";
